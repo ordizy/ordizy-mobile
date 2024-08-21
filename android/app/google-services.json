@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "320571997703",
+    "project_id": "ordizy-80538",
+    "storage_bucket": "ordizy-80538.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320571997703:android:66bff1d3553d1c868734a2",
+        "android_client_info": {
+          "package_name": "com.example.ordizy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320571997703-ujlsbsr6fib4s3sq5j2dkudpsn2ukpgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbnGdZ32GcszM3_jiTR8-1QPkQ-mGVD5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320571997703-ujlsbsr6fib4s3sq5j2dkudpsn2ukpgl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "320571997703-qqt0ce06m8gjq1h3e7ee5r9oq0ai3kp8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ordizy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
