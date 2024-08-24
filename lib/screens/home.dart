@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ordizy/services/auth.dart';
 
@@ -13,12 +14,26 @@ class Home extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Home"),
           actions: [
-            ElevatedButton(onPressed: () async {
-              await _auth.signOut();
-            },
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  // Sign out the user
+                  await FirebaseAuth.instance.signOut();
+
+                  // Redirect to the home page
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/',
+                        (Route<dynamic> route) => false,
+                  );
+                } catch (e) {
+                  print('Error during sign-out: ${e.toString()}');
+                }
+              },
               child: const Icon(Icons.logout),
             )
           ],
+
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

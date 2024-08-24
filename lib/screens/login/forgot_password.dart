@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
-import '../../utils/size_config.dart'; // Import SizeConfig
+import '../../utils/size_config.dart';
 
-class ForgotPassword extends StatelessWidget {
-  // Define a default border radius if not provided by SizeConfig
-  static const double borderRadius = 18.0;
-
+class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context); // Initialize SizeConfig
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Forgot Password"),
+        ),
         body: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 6), // Updated margin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated spacing
-                _header(),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated spacing
-                _image(),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated spacing
-                _inputFields(context),
+                SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
+                _image('assets/img/password.png'),
+                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                _forgotPasswordHeader(),
+                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                _forgotPasswordInputFields(context),
+                SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated size
+                _forgotPasswordButton(context),
               ],
             ),
           ),
@@ -31,7 +33,7 @@ class ForgotPassword extends StatelessWidget {
     );
   }
 
-  Widget _header() {
+  Widget _forgotPasswordHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -39,30 +41,30 @@ class ForgotPassword extends StatelessWidget {
           "Forgot password",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: SizeConfig.textMultiplier * 4.5, // Updated text size
+            fontSize: SizeConfig.textMultiplier * 4, // Updated text size
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated spacing
+        SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
         Text(
           "Enter the email address to request a password reset",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: SizeConfig.textMultiplier * 2.5, // Updated text size
+            fontSize: SizeConfig.textMultiplier * 2, // Updated text size
           ),
         ),
       ],
     );
   }
 
-  Widget _image() {
+  Widget _image(String path) {
     return Image.asset(
-      'assets/images/password.png', // Updated path to use 'assets/'
-      height: SizeConfig.imageSizeMultiplier * 50, // Updated image height
+      path,
+      height: SizeConfig.imageSizeMultiplier * 40, // Updated image size
     );
   }
 
-  Widget _inputFields(BuildContext context) {
+  Widget _forgotPasswordInputFields(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -70,7 +72,7 @@ class ForgotPassword extends StatelessWidget {
           decoration: InputDecoration(
             hintText: "Enter your email",
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius), // Use default border radius
+              borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide.none,
             ),
             fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
@@ -84,35 +86,38 @@ class ForgotPassword extends StatelessWidget {
             return null;
           },
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 6), // Updated spacing
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 20, // Updated padding
-          ),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/email_otp');
-            },
-            child: Text(
-              "Next",
-              style: TextStyle(
-                fontSize: SizeConfig.textMultiplier * 2.5, // Updated text size
-                color: Colors.white,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF3572EF), // Background color
-              padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 10, // Updated padding
-                vertical: SizeConfig.heightMultiplier * 2.5, // Updated padding
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius), // Use default border radius
-              ),
-            ),
+      ],
+    );
+  }
+
+  Widget _forgotPasswordButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.blockSizeHorizontal * 20, // Updated padding
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          // Handle password reset
+          Navigator.pop(context); // Return to the previous screen
+        },
+        child: Text(
+          "Reset Password",
+          style: TextStyle(
+            fontSize: SizeConfig.textMultiplier * 2, // Updated text size
+            color: Colors.white,
           ),
         ),
-      ],
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFF3572EF),
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 12, // Updated padding
+            vertical: SizeConfig.heightMultiplier * 1.5, // Updated padding
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+        ),
+      ),
     );
   }
 }
