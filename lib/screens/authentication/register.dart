@@ -229,19 +229,16 @@ class _RegisterState extends State<Register> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("Registration successful!"),
-                  duration: Duration(seconds: 2), // Duration of the SnackBar
+                  duration: Duration(seconds: 3), // Duration of the SnackBar
                 ),
               );
 
-              // Wait for 5 seconds and then navigate to the home page
-              Future.delayed(Duration(seconds: 5), () {
+              // Navigate to the home page after SnackBar is dismissed
+              Future.delayed(Duration(seconds: 3), () {
                 Navigator.of(context).pushReplacementNamed('/home'); // Change '/home' to your home route
               });
-            } else {
-              setState(() {
-                error = "Already have an account for this email";
-              });
             }
+
           }
         },
         child: Text(
