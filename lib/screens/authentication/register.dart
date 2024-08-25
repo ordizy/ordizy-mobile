@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../utils/size_config.dart';
 import '../../services/auth.dart';
@@ -49,7 +50,11 @@ class _RegisterState extends State<Register> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                   _signUpHeader(),
                   SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
-                  _roleSwitch(),
+
+                  // Reduce the height of this SizedBox to minimize the gap
+                  _roleSelection(),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
+
                   Form(
                     key: _formKey,
                     child: _signUpInputFields(context),
@@ -107,20 +112,36 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget _roleSwitch() {
+  Widget _roleSelection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("As a Seller"),
-        Switch(
-          value: _isBuyer,
+        Radio(
+          value: true,
+          groupValue: _isBuyer,
           onChanged: (value) {
             setState(() {
-              _isBuyer = value;
+              _isBuyer = value!;
             });
           },
         ),
-        Text("As a Buyer"),
+        Padding(
+          padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal*4), // Reduce the padding
+          child: Text("Buyer"),
+        ),
+        Radio(
+          value: false,
+          groupValue: _isBuyer,
+          onChanged: (value) {
+            setState(() {
+              _isBuyer = value!;
+            });
+          },
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4), // Reduce the padding
+          child: Text("Seller"),
+        ),
       ],
     );
   }
@@ -129,14 +150,14 @@ class _RegisterState extends State<Register> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: SizeConfig.heightMultiplier * 5),
+        SizedBox(height: SizeConfig.heightMultiplier * 2), // Adjusted size
         _textField(
           controller: _nameController,
-          hintText: _isBuyer ? 'Name' : ' Shop Name',
+          hintText: _isBuyer ? 'Name' : 'Shop Name',
           icon: Icons.person,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your name';
+              return 'Please enter your ${_isBuyer ? 'name' : 'shop name'}';
             }
             return null;
           },
@@ -276,8 +297,8 @@ class _RegisterState extends State<Register> {
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF3572EF),
           padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 12, // Updated padding
-            vertical: SizeConfig.heightMultiplier * 1.5, // Updated padding
+            horizontal: SizeConfig.blockSizeHorizontal * 10,
+            vertical: SizeConfig.heightMultiplier * 2,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
@@ -287,15 +308,29 @@ class _RegisterState extends State<Register> {
     );
   }
 
-
-
   Widget _loginLink(BuildContext context) {
-    return Center(
-      child: TextButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/login'); // Navigate to login page
-        },
-        child: Text("Already have an account? Login"),
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: 'Already have an account? ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: SizeConfig.textMultiplier * 2,
+            ),
+          ),
+          TextSpan(
+            text: 'Login',
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: SizeConfig.textMultiplier * 2,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Navigator.of(context).pushNamed('/login');
+              },
+          ),
+        ],
       ),
     );
   }
