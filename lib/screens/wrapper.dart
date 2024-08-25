@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ordizy/screens/authentication/authenticate.dart';
+import 'package:ordizy/screens/authentication/sign_in.dart';
 import 'package:ordizy/screens/home.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class Wrapper extends StatelessWidget {
     final user=Provider.of<UserModel?>(context);
 
     if(user==null){
-      return Authenticate();
+      return SignInPage();
     }else{
       return Home();
     }

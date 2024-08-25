@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../utils/size_config.dart';
 import '../../services/auth.dart';
+ // Import the signup page
 
 class SignInPage extends StatefulWidget {
-  final Function toggle;
-  const SignInPage({Key? key, required this.toggle}) : super(key: key);
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -236,7 +236,7 @@ class _SignInPageState extends State<SignInPage> {
           SizedBox(width: SizeConfig.blockSizeHorizontal * 1), // Updated width
           GestureDetector(
             onTap: () {
-              widget.toggle();
+              Navigator.pushNamed(context, '/register');
             },
             child: Text(
               "Sign Up",

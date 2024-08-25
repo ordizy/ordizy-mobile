@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ordizy/screens/authentication/register.dart';
+import 'screens/authentication/sign_in.dart';
 import 'screens/home.dart';
 import 'screens/splash_screen.dart';
 // Example of a home screen
@@ -32,8 +34,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Wrapper(), // Default route
         // '/splash': (context) => SplashScreen(),
-        // '/register': (context) => RegisterScreen(), // Example of a registration route
-        // '/login': (context) => LoginScreen(), // Example of a login route
+        '/register': (context) => Register(),
+         '/login': (context) => SignInPage(), // Example of a login route
         '/home': (context) => Home(), // Example of a home route
       },
     );
