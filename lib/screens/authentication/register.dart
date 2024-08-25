@@ -13,6 +13,7 @@ class _RegisterState extends State<Register> {
   final AuthServices _auth = AuthServices();
   String error = "";
   final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
@@ -245,10 +246,22 @@ class _RegisterState extends State<Register> {
             );
 
             if (result == null) {
-              Navigator.pushReplacementNamed(context, '/login');
+              // Show a SnackBar for success message
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Registration successful!"),
+                  duration: Duration(seconds: 3), // Duration of the SnackBar
+                ),
+              );
+
+              // Navigate to the login page after SnackBar is dismissed
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context).pushReplacementNamed('/login');
+              });
             } else {
+              // Show an error message
               setState(() {
-                error = result.toString();
+                error = result; // Display the error message
               });
             }
           }
@@ -273,6 +286,7 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+
 
 
   Widget _loginLink(BuildContext context) {

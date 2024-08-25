@@ -4,34 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ordizy/models/UserModel.dart';
 
 class AuthServices {
-  // Firebase instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Create a user from Firebase user with uid
   UserModel? _userWithFirebaseUserUid(User? user) {
     return user != null ? UserModel(uid: user.uid) : null;
   }
 
-  // Create the stream for checking the auth changes in the user
   Stream<UserModel?> get user {
     return _auth.authStateChanges().map(_userWithFirebaseUserUid);
   }
 
-  // Sign in anonymously
-  Future<UserModel?> signInAnonymously() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return _userWithFirebaseUserUid(user);
-    } catch (err) {
-      print(err.toString());
-      return null;
-    }
-  }
-
-  // Register using email and password
-  Future<User?> registerWithEmailPassword({
+  Future<String?> registerWithEmailPassword({
     required String email,
     required String password,
     required String name,
@@ -39,28 +23,43 @@ class AuthServices {
     required bool isBuyer,
   }) async {
     try {
+      // Check if the email is already in use
+      final userEmail = await _firestore.collection('users').where('email', isEqualTo: email).get();
+      if (userEmail.docs.isNotEmpty) {
+        return 'Email is already in use';
+      }
+
+      // Check if the phone number is already in use
+      final userDoc = await _firestore.collection('users').where('phoneNumber', isEqualTo: phoneNumber).get();
+      if (userDoc.docs.isNotEmpty) {
+        return 'Phone number is already in use';
+      }
+
+      // Create the user
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = result.user;
 
-      // Save the user data to Firestore
-      await _firestore.collection('users').doc(user?.uid).set({
-        'name': name,
-        'phoneNumber': phoneNumber,
-        'email': email,
-        'role': isBuyer ? 'buyer' : 'seller',
-      });
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'Name': name,
+          'phoneNumber': phoneNumber,
+          'email': email,
+          'role': isBuyer ? 'buyer' : 'seller',
+        });
 
-      return user;
+        print('User registered and data saved to Firestore: ${user.uid}');
+      }
+
+      return null; // Return null to indicate no error
     } catch (e) {
-      print(e.toString());
-      return null;
+      print('Error: ${e.toString()}');
+      return 'Registration failed. Please try again.';
     }
   }
 
-  // Sign in with email and password
   Future<UserModel?> signInUsingEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -75,7 +74,6 @@ class AuthServices {
     }
   }
 
-  // Sign out
   Future<void> signOut() async {
     try {
       await _auth.signOut();
