@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ordizy/services/auth.dart';
-import '../../utils/size_config.dart'; // Import SizeConfig
+import '../../utils/size_config.dart';
+import '../../services/auth.dart';
 
 class Register extends StatefulWidget {
-  final Function toggle; // Function passed to toggle between Sign Up and Login pages
-
-  const Register({Key? key, required this.toggle}) : super(key: key);
+  const Register({Key? key}) : super(key: key);
 
   @override
   State<Register> createState() => _RegisterState();
@@ -13,15 +11,14 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthServices _auth = AuthServices();
-
   String error = "";
-
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  bool _isBuyer = true; // Default role is buyer
 
   @override
   void dispose() {
@@ -37,32 +34,36 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     SizeConfig().init(context); // Initialize SizeConfig
 
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 6), // Responsive padding
-            child: Form(
-              key: _formKey,
+    return SafeArea(
+      child: Scaffold(
+        body: Center( // Center the content vertically
+          child: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 6), // Updated margin
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // Center content vertically
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  _image('assets/img/logo.png'), // Add logo similar to SignInPage
-                  SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
+                mainAxisSize: MainAxisSize.min, // Use minimum size for vertical centering
+                children: [
+                  SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
+                  _image('assets/img/logo.png'),
+                  SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                   _signUpHeader(),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2), // Reduced size
-                  _signUpInputFields(context),
-                  SizedBox(height: SizeConfig.heightMultiplier * 4), // Further reduced size
+                  SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                  _roleSwitch(),
+                  Form(
+                    key: _formKey,
+                    child: _signUpInputFields(context),
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
                   _signUpButton(context),
                   SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
                   if (error.isNotEmpty)
-                    Text(
-                      error,
-                      style: TextStyle(color: Colors.red),
-                      textAlign: TextAlign.center,
+                    Center(
+                      child: Text(
+                        error,
+                        style: TextStyle(color: Colors.red, fontSize: SizeConfig.textMultiplier * 2),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1), // Adjusted size
                   _loginLink(context), // Add the login link similar to SignInPage
                 ],
               ),
@@ -105,14 +106,32 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  Widget _roleSwitch() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("As a Seller"),
+        Switch(
+          value: _isBuyer,
+          onChanged: (value) {
+            setState(() {
+              _isBuyer = value;
+            });
+          },
+        ),
+        Text("As a Buyer"),
+      ],
+    );
+  }
+
   Widget _signUpInputFields(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: SizeConfig.heightMultiplier * 3),
+        SizedBox(height: SizeConfig.heightMultiplier * 5),
         _textField(
           controller: _nameController,
-          hintText: "Name",
+          hintText: _isBuyer ? 'Name' : ' Shop Name',
           icon: Icons.person,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -187,14 +206,14 @@ class _RegisterState extends State<Register> {
     required TextEditingController controller,
     required String hintText,
     required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
     bool obscureText = false,
-    required String? Function(String?) validator,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
-      keyboardType: keyboardType,
       obscureText: obscureText,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         border: OutlineInputBorder(
@@ -218,31 +237,24 @@ class _RegisterState extends State<Register> {
         onPressed: () async {
           if (_formKey.currentState?.validate() ?? false) {
             dynamic result = await _auth.registerWithEmailPassword(
-              _emailController.text,
-              _passwordController.text,
-              _nameController.text,
-              _phoneController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
+              name: _nameController.text,
+              phoneNumber: _phoneController.text,
+              isBuyer: _isBuyer,
             );
 
-            if (result != null) {
-              // Show a SnackBar for success message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Registration successful!"),
-                  duration: Duration(seconds: 3), // Duration of the SnackBar
-                ),
-              );
-
-              // Navigate to the home page after SnackBar is dismissed
-              Future.delayed(Duration(seconds: 3), () {
-                Navigator.of(context).pushReplacementNamed('/home'); // Change '/home' to your home route
+            if (result == null) {
+              Navigator.pushReplacementNamed(context, '/login');
+            } else {
+              setState(() {
+                error = result.toString();
               });
             }
-
           }
         },
         child: Text(
-          "Sign Up",
+          "Register",
           style: TextStyle(
             fontSize: SizeConfig.textMultiplier * 2, // Updated text size
             color: Colors.white,
@@ -262,33 +274,14 @@ class _RegisterState extends State<Register> {
     );
   }
 
+
   Widget _loginLink(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeConfig.heightMultiplier * 1, // Adjusted padding
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Already have an account?",
-            style: TextStyle(fontSize: SizeConfig.textMultiplier * 1.8), // Updated text size
-          ),
-          SizedBox(width: SizeConfig.blockSizeHorizontal * 1), // Adjusted width
-          GestureDetector(
-            onTap: () {
-              widget.toggle();
-            },
-            child: Text(
-              "Login",
-              style: TextStyle(
-                fontSize: SizeConfig.textMultiplier * 1.8, // Updated text size
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
+    return Center(
+      child: TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/login'); // Navigate to login page
+        },
+        child: Text("Already have an account? Login"),
       ),
     );
   }

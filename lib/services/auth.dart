@@ -29,8 +29,15 @@ class AuthServices {
       return null;
     }
   }
-  //Register using email and passsword
-  Future registerWithEmailPassword(String email, String password, String Name, String phoneNumber) async {
+
+  // Register using email and password
+  Future<User?> registerWithEmailPassword({
+    required String email,
+    required String password,
+    required String name,
+    required String phoneNumber,
+    required bool isBuyer,
+  }) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -40,9 +47,10 @@ class AuthServices {
 
       // Save the user data to Firestore
       await _firestore.collection('users').doc(user?.uid).set({
-        'Name': Name,
+        'name': name,
         'phoneNumber': phoneNumber,
         'email': email,
+        'role': isBuyer ? 'buyer' : 'seller',
       });
 
       return user;
@@ -52,8 +60,8 @@ class AuthServices {
     }
   }
 
-//signin with email password
-  Future signInUsingEmailAndPassword(String email, String password) async {
+  // Sign in with email and password
+  Future<UserModel?> signInUsingEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -67,18 +75,12 @@ class AuthServices {
     }
   }
 
-  //signOut
-
-Future signOut() async{
-    try{
-      return await _auth.signOut();
-    }catch(err){
+  // Sign out
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (err) {
       print('This is the error: ${err.toString()}');
-      return null;
     }
+  }
 }
-
-
-}
-
-
