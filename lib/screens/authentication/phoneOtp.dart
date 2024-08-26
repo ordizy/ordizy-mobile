@@ -14,13 +14,13 @@ class ForgotpwdPhoneotp extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: SizeConfig.heightMultiplier * 3), // Use SizeConfig for height
+                SizedBox(height: SizeConfig.heightMultiplier * 8), // Use SizeConfig for height
                 _image(), // Image added here
-                SizedBox(height: SizeConfig.heightMultiplier * 3), // Spacing between image and header
+                SizedBox(height: SizeConfig.heightMultiplier * 2), // Spacing between image and header
                 _header(),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Spacing after header
+                SizedBox(height: SizeConfig.heightMultiplier * 6), // Spacing after header
                 _inputFields(context),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Spacing after input fields
+                SizedBox(height: SizeConfig.heightMultiplier * 4), // Spacing after input fields
                 _resend(context),
               ],
             ),
@@ -33,7 +33,7 @@ class ForgotpwdPhoneotp extends StatelessWidget {
   Widget _image() {
     return Image.asset(
       'assets/img/logo.png', // Ensure the path to your image is correct
-      height: SizeConfig.imageSizeMultiplier * 30, // Use SizeConfig for image height
+      height: SizeConfig.imageSizeMultiplier * 40, // Use SizeConfig for image height
     );
   }
 
@@ -44,16 +44,16 @@ class ForgotpwdPhoneotp extends StatelessWidget {
         Text(
           "Verification",
           style: TextStyle(
-            fontSize: SizeConfig.textMultiplier * 4.5, // Use SizeConfig for font size
+            fontSize: SizeConfig.textMultiplier * 4, // Use SizeConfig for font size
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 1.5), // Spacing after header text
+        SizedBox(height: SizeConfig.heightMultiplier * 2), // Spacing after header text
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             style: TextStyle(
-              fontSize: SizeConfig.textMultiplier * 2.5, // Use SizeConfig for font size
+              fontSize: SizeConfig.textMultiplier * 2, // Use SizeConfig for font size
               color: Colors.black,
             ),
             children: [
@@ -82,7 +82,7 @@ class ForgotpwdPhoneotp extends StatelessWidget {
           decoration: InputDecoration(
             hintText: "Phone number OTP Code",
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4.5), // Use SizeConfig for border radius
+              borderRadius: BorderRadius.circular(18), // Use SizeConfig for border radius
               borderSide: BorderSide.none,
             ),
             fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
@@ -96,10 +96,10 @@ class ForgotpwdPhoneotp extends StatelessWidget {
             return null;
           },
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 5), // Use SizeConfig for height
+        SizedBox(height: SizeConfig.heightMultiplier * 4), // Use SizeConfig for height
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 15, // Use SizeConfig for horizontal padding
+            horizontal: SizeConfig.blockSizeHorizontal * 20, // Use SizeConfig for horizontal padding
           ),
           child: ElevatedButton(
             onPressed: () {
@@ -108,18 +108,18 @@ class ForgotpwdPhoneotp extends StatelessWidget {
             child: Text(
               "Next",
               style: TextStyle(
-                fontSize: SizeConfig.textMultiplier * 2.2, // Use SizeConfig for font size
+                fontSize: SizeConfig.textMultiplier * 2, // Use SizeConfig for font size
                 color: Colors.white,
               ),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF3572EF),
               padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 8, // Use SizeConfig for horizontal padding
-                vertical: SizeConfig.heightMultiplier * 2, // Use SizeConfig for vertical padding
+                horizontal: SizeConfig.blockSizeHorizontal * 4, // Use SizeConfig for horizontal padding
+                vertical: SizeConfig.heightMultiplier *1.5, // Use SizeConfig for vertical padding
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4.5), // Use SizeConfig for border radius
+                borderRadius: BorderRadius.circular(18), // Use SizeConfig for border radius
               ),
             ),
           ),

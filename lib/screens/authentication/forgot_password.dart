@@ -18,7 +18,7 @@ class ForgotPasswordPage extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4), // Updated margin
+            margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 6), // Updated margin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

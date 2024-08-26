@@ -3,6 +3,8 @@ import 'package:ordizy/screens/authentication/phoneOtp.dart';
 import 'package:ordizy/screens/authentication/register.dart';
 import 'package:ordizy/screens/authentication/forgot_password.dart';
 import 'package:ordizy/screens/authentication/emailOtp.dart';
+import 'package:ordizy/screens/authentication/change_password.dart';
+import 'package:ordizy/screens/authentication/updated.dart';
 import 'screens/authentication/sign_in.dart';
 import 'screens/home.dart';
 import 'screens/splash_screen.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => Home(), // Example of a home route
         '/forgot_password': (context) => ForgotPasswordPage(),
         '/fPwd_emailOtp': (context) => EmailOtp(),
+        '/reset_password': (context) => ResetPassword(),
+        '/updated': (context) => PasswordChanged(),
       },
     );
   }

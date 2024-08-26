@@ -14,13 +14,13 @@ class EmailOtp extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
+                SizedBox(height: SizeConfig.heightMultiplier * 8), // Updated size
                 _image(),
                 SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                 _header(),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                SizedBox(height: SizeConfig.heightMultiplier * 6), // Updated size
                 _inputFields(context),
-                SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
+                SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated size
                 _resend(context),
               ],
             ),
@@ -41,7 +41,7 @@ class EmailOtp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 1), // Updated size
+        SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
@@ -91,7 +91,7 @@ class EmailOtp extends StatelessWidget {
             return null;
           },
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 5), // Updated size
+        SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated size
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: SizeConfig.blockSizeHorizontal * 20, // Updated padding
@@ -110,8 +110,8 @@ class EmailOtp extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF3572EF),
               padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 5, // Updated padding
-                vertical: SizeConfig.heightMultiplier * 2, // Updated padding
+                horizontal: SizeConfig.blockSizeHorizontal * 4, // Updated padding
+                vertical: SizeConfig.heightMultiplier * 1.8, // Updated padding
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
