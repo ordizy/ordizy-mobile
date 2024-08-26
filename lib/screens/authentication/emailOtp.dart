@@ -128,7 +128,7 @@ class EmailOtp extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Didn't receive the verification OTP?",
+          "Didn't receive the OTP?",
           style: TextStyle(fontSize: SizeConfig.textMultiplier * 1.8), // Updated text size
         ),
         TextButton(
