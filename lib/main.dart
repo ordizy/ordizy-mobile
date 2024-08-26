@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ordizy/screens/authentication/forgotPwd_phoneOtp.dart';
 import 'package:ordizy/screens/authentication/register.dart';
 import 'screens/authentication/sign_in.dart';
 import 'screens/home.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Wrapper(), // Default route
-        // '/splash': (context) => SplashScreen(),
+        '/fPwd_phoneOtp': (context) => ForgotpwdPhoneotp(),
         '/register': (context) => Register(),
          '/login': (context) => SignInPage(), // Example of a login route
         '/home': (context) => Home(), // Example of a home route
