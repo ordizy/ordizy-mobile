@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/size_config.dart';
+
 class ForgotpwdPhoneotp extends StatelessWidget {
+  // TextEditingController to capture OTP input
+  final TextEditingController otpController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // Initialize SizeConfig
+    SizeConfig().init(context);
+
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(  // Wrap the content with SingleChildScrollView
+        body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(24),
+            margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal! * 6), // Adjusted margin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: SizeConfig.blockSizeVertical! * 3), // Adjusted spacing
                 _header(),
-                SizedBox(height: 20), // Adjust the spacing as needed
-                // _image(), // Add the image widget here
-                // SizedBox(height: 20), // Adjust the spacing as needed
+                SizedBox(height: SizeConfig.blockSizeVertical! * 2), // Adjusted spacing
+                // _image(), // Add the image widget here if needed
+                // SizedBox(height: SizeConfig.blockSizeVertical! * 2), // Adjusted spacing
                 _inputFields(context),
-                SizedBox(height: 5),
+                SizedBox(height: SizeConfig.blockSizeVertical! * 2), // Adjusted spacing
                 _resend(context),
               ],
             ),
@@ -34,27 +42,24 @@ class ForgotpwdPhoneotp extends StatelessWidget {
         Text(
           "Verification",
           style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold
+            fontSize: SizeConfig.blockSizeHorizontal! * 10, // Adjusted font size
+            fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: SizeConfig.blockSizeVertical! * 1), // Adjusted spacing
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             style: TextStyle(
-                fontSize: 20,
-                color: Colors.black
-            ), // Default text style
+              fontSize: SizeConfig.blockSizeHorizontal! * 5, // Adjusted font size
+              color: Colors.black,
+            ),
             children: [
               TextSpan(
-                  text: "Please enter the 6-digit OTP code sent to your "
-              ),
+                  text: "Please enter the 6-digit OTP code sent to your "),
               TextSpan(
                 text: "Phone number",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold
-                ), // Bold style for "email"
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextSpan(text: "."),
             ],
@@ -64,38 +69,35 @@ class ForgotpwdPhoneotp extends StatelessWidget {
     );
   }
 
-  Widget _image() {
-    return Image.asset(
-      'asset/images/otp.png', // Make sure to add your image to the assets folder and update the path
-      height: 300, // Adjust the height as needed
-    );
-  }
-
   Widget _inputFields(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextFormField(
+          controller: otpController, // Assign the TextEditingController
           decoration: InputDecoration(
             hintText: "Phone number OTP Code",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide.none,
             ),
-            fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+            fillColor: Theme.of(context)
+                .colorScheme
+                .secondary
+                .withOpacity(0.1),
             filled: true,
-            // prefixIcon: Icon(Icons.person),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your username';
+              return 'Please enter the OTP code';
             }
             return null;
           },
         ),
-        SizedBox(height: 50),
+        SizedBox(height: SizeConfig.blockSizeVertical! * 5), // Adjusted spacing
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80.0),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.blockSizeHorizontal! * 20), // Adjusted padding
           child: ElevatedButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/reset_password');
@@ -103,16 +105,16 @@ class ForgotpwdPhoneotp extends StatelessWidget {
             child: Text(
               "Next",
               style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white
-              ), // Text color is white
+                fontSize: SizeConfig.blockSizeHorizontal! * 5, // Adjusted font size
+                color: Colors.white,
+              ),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF3572EF), // Background color
+              backgroundColor: Color(0xFF3572EF),
               padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15
-              ), // Adjust padding as needed
+                horizontal: SizeConfig.blockSizeHorizontal! * 5,
+                vertical: SizeConfig.blockSizeVertical! * 2, // Adjusted padding
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
               ),
@@ -127,15 +129,14 @@ class ForgotpwdPhoneotp extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-            "Didn't receive the verification OTP?"
-        ),
-        TextButton(onPressed: () {},
-            child: Text(
-                "Resend OTP"
-            )
-        )
+        Text("Didn't receive the verification OTP?"),
+        TextButton(
+            onPressed: () {
+              // Implement resend OTP functionality here
+            },
+            child: Text("Resend OTP")),
       ],
     );
   }
 }
+
