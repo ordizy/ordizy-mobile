@@ -215,7 +215,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _forgotPasswordLink(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/fPwd_phoneOtp');
+        Navigator.pushNamed(context, '/forgot_password');
       },
       child: Text("Forgot password?"),
     );

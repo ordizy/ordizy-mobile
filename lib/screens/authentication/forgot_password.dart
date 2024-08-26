@@ -9,19 +9,24 @@ class ForgotPasswordPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Forgot Password"),
+          automaticallyImplyLeading: false, // Remove back arrow
+          // title: Text("Forgot Password",
+          //   style: TextStyle(
+          //     fontSize: SizeConfig.textMultiplier * 2, // Updated text size
+          //   ),
+          // ),
         ),
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 6), // Updated margin
+            margin: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4), // Updated margin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
-                _image('assets/img/password.png'),
+                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                _image('assets/img/logo.png'),
                 SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                 _forgotPasswordHeader(),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                SizedBox(height: SizeConfig.heightMultiplier * 8), // Updated size
                 _forgotPasswordInputFields(context),
                 SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated size
                 _forgotPasswordButton(context),
@@ -98,7 +103,7 @@ class ForgotPasswordPage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           // Handle password reset
-          Navigator.pop(context); // Return to the previous screen
+          Navigator.pushNamed(context, '/fPwd_emailOtp'); // Return to the previous screen
         },
         child: Text(
           "Reset Password",
@@ -110,7 +115,7 @@ class ForgotPasswordPage extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF3572EF),
           padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 12, // Updated padding
+            horizontal: SizeConfig.blockSizeHorizontal * 8, // Updated padding
             vertical: SizeConfig.heightMultiplier * 1.5, // Updated padding
           ),
           shape: RoundedRectangleBorder(
