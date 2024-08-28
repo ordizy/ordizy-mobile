@@ -187,7 +187,7 @@ class _SignInPageState extends State<SignInPage> {
                 error = "Please enter valid credentials";
               });
             } else {
-              Navigator.pushReplacementNamed(context, '/home');
+              Navigator.pushReplacementNamed(context, '/buyer_home');
             }
           }
         },
