@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../utils/size_config.dart';
 import '../../services/auth.dart';
- // Import the signup page
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -41,7 +40,7 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisSize: MainAxisSize.min, // Use minimum size for vertical centering
                 children: [
                   SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
-                  _image('assets/img/logo.png'),
+                  _image('assests/img/logo.png'),
                   SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                   _loginHeader(),
                   SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
@@ -51,6 +50,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
                   _loginButton(context),
+                  _googleSignInButton(context), // Updated Google Sign-In button
                   _signUpLink(context), // Add the signup link only for login
                 ],
               ),
@@ -60,6 +60,48 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+
+  Widget _googleSignInButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: SizeConfig.heightMultiplier * 2, // Adjust padding
+      ),
+      child: ElevatedButton.icon(
+        onPressed: () async {
+          final result = await _auth.signInWithGoogle();
+          if (result != null) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            setState(() {
+              error = "Google Sign-In failed. Please try again.";
+            });
+          }
+        },
+        icon: Image.asset(
+          'assests/img/google_logo.png', // Ensure you have this image in your assets
+          height: SizeConfig.imageSizeMultiplier * 5, // Adjust size
+        ),
+        label: Text(
+          'Sign in with Google',
+          style: TextStyle(
+            fontSize: SizeConfig.textMultiplier * 2, // Adjust text size
+            color: Colors.white,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.redAccent,
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 10, // Adjust padding
+            vertical: SizeConfig.heightMultiplier * 1.5, // Adjust padding
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _loginHeader() {
     return Column(

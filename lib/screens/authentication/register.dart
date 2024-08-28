@@ -46,7 +46,7 @@ class _RegisterState extends State<Register> {
                 mainAxisSize: MainAxisSize.min, // Use minimum size for vertical centering
                 children: [
                   SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
-                  _image('assets/img/logo.png'),
+                  _image('assests/img/logo.png'),
                   SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                   _signUpHeader(),
                   SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
@@ -322,8 +322,9 @@ class _RegisterState extends State<Register> {
           TextSpan(
             text: 'Login',
             style: TextStyle(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               fontSize: SizeConfig.textMultiplier * 2,
+              fontWeight: FontWeight.bold,
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
