@@ -139,27 +139,15 @@ class AuthServices {
     }
   }
 
-  // // Reset Password
-  // Future<void> resetPassword(String email) async {
-  //   try {
-  //     await _auth.sendPasswordResetEmail(email: email);
-  //   } catch (e) {
-  //     print('Reset Password Error: ${e.toString()}');
-  //   }
-  // }
-  //
-  // // Update user profile
-  // Future<void> updateUserProfile({required String name, required String phoneNumber}) async {
-  //   try {
-  //     User? user = _auth.currentUser;
-  //     if (user != null) {
-  //       await _firestore.collection('users').doc(user.uid).update({
-  //         'name': name,
-  //         'phoneNumber': phoneNumber,
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print('Update Profile Error: ${e.toString()}');
-  //   }
-  // }
+// ## forgort pasword handle (send the link)
+
+  Future<void> forgotPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print('error ${e.toString()}');
+      throw e;
+    }
+  }
+
 }

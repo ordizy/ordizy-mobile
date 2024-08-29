@@ -91,8 +91,8 @@ class _SignInPageState extends State<SignInPage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.redAccent,
           padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 10, // Adjust padding
-            vertical: SizeConfig.heightMultiplier * 1.5, // Adjust padding
+            horizontal: SizeConfig.blockSizeHorizontal * 12, // Same padding for uniform size
+            vertical: SizeConfig.heightMultiplier * 1.5, // Same padding
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
@@ -101,7 +101,6 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
-
 
   Widget _loginHeader() {
     return Column(
@@ -167,7 +166,8 @@ class _SignInPageState extends State<SignInPage> {
             return null;
           },
         ),
-        SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
+        // SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
+        _forgotPasswordLink(context), // Position link directly below password field
         Visibility(
           visible: error.isNotEmpty,
           child: Center(
@@ -180,7 +180,6 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ),
         ),
-        _forgotPasswordLink(context), // Moved here
       ],
     );
   }
@@ -212,10 +211,8 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _loginButton(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: SizeConfig.blockSizeHorizontal * 20, // Updated padding
-      ),
+    return SizedBox(
+      width: SizeConfig.blockSizeHorizontal * 68, // Set the width of the button
       child: ElevatedButton(
         onPressed: () async {
           if (_formKey.currentState?.validate() ?? false) {
@@ -243,8 +240,8 @@ class _SignInPageState extends State<SignInPage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF3572EF),
           padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 12, // Updated padding
-            vertical: SizeConfig.heightMultiplier * 1.5, // Updated padding
+            horizontal: SizeConfig.blockSizeHorizontal * 12,
+            vertical: SizeConfig.heightMultiplier * 1.5,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
@@ -254,12 +251,16 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+
   Widget _forgotPasswordLink(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        Navigator.pushNamed(context, '/forgot_password');
-      },
-      child: Text("Forgot password?"),
+    return Align(
+      alignment: Alignment.centerRight, // Align to the right below the password field
+      child: TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/forgot_password');
+        },
+        child: Text("Forgot password?"),
+      ),
     );
   }
 

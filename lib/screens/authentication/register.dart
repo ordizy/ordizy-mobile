@@ -47,9 +47,9 @@ class _RegisterState extends State<Register> {
                 children: [
                   SizedBox(height: SizeConfig.heightMultiplier * 3), // Updated size
                   _image('assests/img/logo.png'),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                  // SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                   _signUpHeader(),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                  // SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
 
                   // Reduce the height of this SizedBox to minimize the gap
                   _roleSelection(),
@@ -59,9 +59,9 @@ class _RegisterState extends State<Register> {
                     key: _formKey,
                     child: _signUpInputFields(context),
                   ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
+                  SizedBox(height: SizeConfig.heightMultiplier * 3), // Reduced size
                   _signUpButton(context),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1), // Reduced size
+                  SizedBox(height: SizeConfig.heightMultiplier * 2), // Reduced size
                   if (error.isNotEmpty)
                     Center(
                       child: Text(
