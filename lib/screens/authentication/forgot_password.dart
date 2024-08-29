@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../utils/size_config.dart';
+import '../../services/auth.dart'; // Import your auth service
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordPage extends StatefulWidget {
+  @override
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final TextEditingController _emailController = TextEditingController(); // Add a TextEditingController
+  final _formKey = GlobalKey<FormState>(); // Form key for validation
+  String? _emailError; // Variable to store error message
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context); // Initialize SizeConfig
@@ -10,11 +20,6 @@ class ForgotPasswordPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false, // Remove back arrow
-          // title: Text("Forgot Password",
-          //   style: TextStyle(
-          //     fontSize: SizeConfig.textMultiplier * 2, // Updated text size
-          //   ),
-          // ),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -23,10 +28,10 @@ class ForgotPasswordPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
-                _image('assets/img/logo.png'),
-                SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
+                _image('assests/img/logo.png'),
+                // SizedBox(height: SizeConfig.heightMultiplier * 2), // Updated size
                 _forgotPasswordHeader(),
-                SizedBox(height: SizeConfig.heightMultiplier * 8), // Updated size
+                SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated size
                 _forgotPasswordInputFields(context),
                 SizedBox(height: SizeConfig.heightMultiplier * 4), // Updated size
                 _forgotPasswordButton(context),
@@ -70,28 +75,42 @@ class ForgotPasswordPage extends StatelessWidget {
   }
 
   Widget _forgotPasswordInputFields(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Enter your email",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: BorderSide.none,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            controller: _emailController, // Connect controller to the email input
+            decoration: InputDecoration(
+              hintText: "Enter your email",
+              errorText: _emailError, // Show error message below the input
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide.none,
+              ),
+              fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+              filled: true,
+              prefixIcon: Icon(Icons.person),
             ),
-            fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-            filled: true,
-            prefixIcon: Icon(Icons.person),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              final emailRegEx = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+              if (!emailRegEx.hasMatch(value)) {
+                return 'Please enter a valid email address';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              setState(() {
+                _emailError = null; // Reset error message when typing
+              });
+            },
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter your email';
-            }
-            return null;
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -101,9 +120,24 @@ class ForgotPasswordPage extends StatelessWidget {
         horizontal: SizeConfig.blockSizeHorizontal * 20, // Updated padding
       ),
       child: ElevatedButton(
-        onPressed: () {
-          // Handle password reset
-          Navigator.pushNamed(context, '/fPwd_emailOtp'); // Return to the previous screen
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            // Form validation passed
+            String email = _emailController.text.trim(); // Get the email from the controller
+
+            try {
+              await AuthServices().forgotPassword(email); // Call the forgotPassword method from Auth
+              // Show success message
+              _showDialog(context, 'Success', 'Password reset email sent! Please check your inbox.', success: true);
+            } catch (e) {
+              // Show error if there's an exception
+              _showDialog(context, 'Error', 'Failed to send password reset email');
+            }
+          } else {
+            setState(() {
+              _emailError = _formKey.currentState?.validate() as String?; // Set error message if validation fails
+            });
+          }
         },
         child: Text(
           "Reset Password",
@@ -123,6 +157,29 @@ class ForgotPasswordPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showDialog(BuildContext context, String title, String message, {bool success = false}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (success) {
+                  Navigator.pushNamed(context, '/login');
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
